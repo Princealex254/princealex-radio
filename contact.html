@@ -436,7 +436,7 @@
     <header class="header">
         <div class="container">
             <div class="logo">
-                <img src="logo.png" alt="Prince Alex Radio Logo">
+                <img src="images/logo.png" alt="Prince Alex Radio Logo">
                 <p>Your Voice, Your Vibe, Your Station</p>
             </div>
             <nav class="nav">
@@ -456,7 +456,7 @@
                 <h2>Get in Touch</h2>
                 <div class="contact-grid">
                     <div class="contact-form-container">
-                        <form action="#" method="POST" class="contact-form">
+                        <form id="contactForm" action="#" method="POST" class="contact-form">
                             <label for="name">Name</label>
                             <input type="text" id="name" name="name" required>
                             
@@ -467,6 +467,7 @@
                             <textarea id="message" name="message" rows="5" required></textarea>
                             
                             <button type="submit" class="btn">Send Message</button>
+                            <p id="formMessage" style="margin-top: 10px; color: var(--primary-color);"></p>
                         </form>
                     </div>
                     <div class="contact-info-container">
@@ -475,7 +476,7 @@
                         <p><strong>Phone:</strong> <a href="tel:+254717384875">+254717384875</a></p>
                         <a href="https://wa.me/254717384875" class="btn whatsapp-btn" target="_blank">
                             <!-- Placeholder image for WhatsApp icon -->
-                            <img src="logo.png" alt="WhatsApp"> Call or Chat on WhatsApp
+                            <img src="images/whatsapp-icon.png" alt="WhatsApp"> Call or Chat on WhatsApp
                         </a>
                         
                         <h3>Find Us</h3>
@@ -507,5 +508,44 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contactForm = document.getElementById('contactForm');
+            const formMessage = document.getElementById('formMessage');
+
+            contactForm.addEventListener('submit', (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+
+                // Create an object to store the form data
+                const formData = {
+                    name: name,
+                    email: email,
+                    message: message,
+                    timestamp: new Date().toISOString() // Add a timestamp for tracking
+                };
+
+                // Retrieve existing submissions or initialize an empty array
+                let submissions = JSON.parse(localStorage.getItem('contactSubmissions')) || [];
+                submissions.push(formData);
+
+                // Save the updated array back to local storage
+                localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
+
+                // Provide user feedback
+                formMessage.textContent = 'Message sent and saved locally!';
+                formMessage.style.color = 'green';
+
+                // Optionally, clear the form fields after submission
+                contactForm.reset();
+
+                console.log('Form data saved to local storage:', formData);
+            });
+        });
+    </script>
 </body>
 </html>
